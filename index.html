@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무료 모바일 청첩장 만들기 가이드</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a2e 100%);
+            color: #fff;
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .header p {
+            font-size: 15px;
+            color: #ccc;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .header .badge {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            font-size: 13px;
+            color: #eee;
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin: -30px auto 30px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .toc h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #2c2c2c;
+        }
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+        .toc ol li {
+            counter-increment: toc-counter;
+            margin-bottom: 8px;
+        }
+        .toc ol li a {
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+        .toc ol li a:hover { color: #000; }
+        .toc ol li a::before {
+            content: counter(toc-counter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            flex-shrink: 0;
+        }
+
+        /* Step Sections */
+        .step {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: #2c2c2c;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .step h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        .step h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 28px 0 12px;
+            color: #2c2c2c;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .step h3:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+        .step p, .step li {
+            font-size: 15px;
+            color: #555;
+        }
+        .step ol, .step ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        .step li {
+            margin-bottom: 8px;
+        }
+
+        /* Image placeholder */
+        .img-placeholder {
+            background: #f8f8f8;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+            margin: 16px 0;
+        }
+
+        /* Screenshot images */
+        .step img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Video */
+        .video-container {
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 16px 0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        pre .comment { color: #6a9955; }
+        pre .string { color: #ce9178; }
+        pre .key { color: #9cdcfe; }
+        pre .bool { color: #569cd6; }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: #c7254e;
+        }
+
+        /* Info/Warning boxes */
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196F3;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #1565C0;
+        }
+        .warn-box {
+            background: #fff8e1;
+            border-left: 4px solid #FF9800;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #e65100;
+        }
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #2E7D32;
+        }
+
+        /* Template cards */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .template-card {
+            background: #f9f9f9;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .template-card:hover {
+            border-color: #ccc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .template-card .emoji {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .template-card .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 4px;
+        }
+        .template-card .desc {
+            font-size: 13px;
+            color: #888;
+        }
+        .template-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: #2c2c2c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        .template-card a:hover { background: #444; }
+
+        /* Folder structure */
+        .folder-tree {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px 24px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            color: #555;
+        }
+        .folder-tree .folder { color: #e8a735; font-weight: 600; }
+        .folder-tree .file { color: #666; }
+        .folder-tree .comment { color: #aaa; font-family: -apple-system, sans-serif; font-size: 12px; }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+        .checklist li {
+            padding: 10px 16px;
+            background: #fafafa;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checklist li::before {
+            content: "☐";
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f9f9f9;
+            font-weight: 600;
+            color: #333;
+        }
+        td { color: #555; }
+
+        /* FAQ accordion */
+        .faq-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        .faq-question {
+            width: 100%;
+            padding: 14px 20px;
+            background: #fafafa;
+            border: none;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
+        }
+        .faq-question:hover { background: #f5f5f5; }
+        .faq-question::after {
+            content: "+";
+            font-size: 18px;
+            color: #999;
+            transition: transform 0.2s;
+        }
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            padding: 0 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 20px 16px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 22px; }
+            .step { padding: 24px 20px; }
+            .step h2 { font-size: 19px; }
+            .template-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .template-card { padding: 14px; }
+            pre { font-size: 12px; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>무료 모바일 청첩장 만들기</h1>
+    <p>GitHub Pages를 이용해서 무료로 나만의 모바일 청첩장을 만들어보세요. 개발 지식 없이도 할 수 있습니다.</p>
+    <span class="badge">완전 무료 &middot; 코딩 필요 없음 &middot; 30분이면 완성</span>
+</header>
+
+<div class="container">
+
+    <!-- 목차 -->
+    <nav class="toc">
+        <h2>순서</h2>
+        <ol>
+            <li><a href="#step1">GitHub 회원가입</a></li>
+            <li><a href="#step2">템플릿 고르기</a></li>
+            <li><a href="#step3">내 정보로 수정하기 (config.js)</a></li>
+            <li><a href="#step4">내 사진 준비하기</a></li>
+            <li><a href="#step5">GitHub에 레포지토리 만들기</a></li>
+            <li><a href="#step6">파일 올리기</a></li>
+            <li><a href="#step7">웹페이지 배포하기 (GitHub Pages)</a></li>
+            <li><a href="#step8">완성! 확인하고 공유하기</a></li>
+            <li><a href="#step9">수정이 필요할 때</a></li>
+            <li><a href="#faq">자주 묻는 질문 (FAQ)</a></li>
+        </ol>
+    </nav>
+
+    <!-- STEP 1: 회원가입 -->
+    <section class="step" id="step1">
+        <div class="step-number">1</div>
+        <h2>GitHub 회원가입</h2>
+        <p>GitHub는 코드를 저장하고 웹페이지를 무료로 호스팅할 수 있는 서비스입니다.</p>
+
+        <ol>
+            <li><a href="https://github.com/signup" target="_blank">https://github.com/signup</a>에 접속합니다.</li>
+            <li>이메일, 비밀번호, 사용자 이름(username)을 입력합니다.</li>
+            <li>이메일 인증을 완료하면 가입 끝!</li>
+        </ol>
+
+        <div class="warn-box">
+            <strong>사용자 이름(username)이 중요합니다!</strong><br>
+            나중에 청첩장 주소가 <code>https://사용자이름.github.io/레포이름/</code> 형태가 됩니다.<br>
+            예: 사용자이름이 <code>honggildong</code>이면 → <code>https://honggildong.github.io/my-wedding/</code>
+        </div>
+
+        <div class="img-placeholder">캡처 이미지: GitHub 회원가입 화면</div>
+    </section>
+
+    <!-- STEP 2: 템플릿 고르기 -->
+    <section class="step" id="step2">
+        <div class="step-number">2</div>
+        <h2>템플릿 고르기</h2>
+        <p>아래 9개 템플릿 중 마음에 드는 디자인을 골라주세요. 미리보기를 클릭하면 실제 모습을 확인할 수 있습니다.</p>
+
+        <div class="template-grid">
+            <div class="template-card">
+                <div class="emoji">&#127872;</div>
+                <div class="name">original-warm</div>
+                <div class="desc">따뜻한 베이지 톤, 클래식한 느낌</div>
+                <a href="https://dongdong39.github.io/wedding_templates/original-warm/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#9883;</div>
+                <div class="name">classic-elegant</div>
+                <div class="desc">우아한 세리프, 아이보리 컬러</div>
+                <a href="https://dongdong39.github.io/wedding_templates/classic-elegant/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#9724;</div>
+                <div class="name">modern-minimal</div>
+                <div class="desc">흑백 모노톤, 깔끔한 산세리프</div>
+                <a href="https://dongdong39.github.io/wedding_templates/modern-minimal/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#127801;</div>
+                <div class="name">romantic-flower</div>
+                <div class="desc">소프트 핑크, 로즈골드 꽃 장식</div>
+                <a href="https://dongdong39.github.io/wedding_templates/romantic-flower/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#127811;</div>
+                <div class="name">nature-green</div>
+                <div class="desc">세이지그린, 보태니컬 자연 느낌</div>
+                <a href="https://dongdong39.github.io/wedding_templates/nature-green/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#10024;</div>
+                <div class="name">luxury-gold</div>
+                <div class="desc">다크네이비 + 골드, 프리미엄</div>
+                <a href="https://dongdong39.github.io/wedding_templates/luxury-gold/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#9723;</div>
+                <div class="name">simple-clean</div>
+                <div class="desc">순백/회색, 장식 완전 제거</div>
+                <a href="https://dongdong39.github.io/wedding_templates/simple-clean/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#127910;</div>
+                <div class="name">vintage-film</div>
+                <div class="desc">세피아 필름, 폴라로이드 감성</div>
+                <a href="https://dongdong39.github.io/wedding_templates/vintage-film/" target="_blank">미리보기</a>
+            </div>
+            <div class="template-card">
+                <div class="emoji">&#127912;</div>
+                <div class="name">watercolor-soft</div>
+                <div class="desc">수채화 파스텔, 몽환적 분위기</div>
+                <a href="https://dongdong39.github.io/wedding_templates/watercolor-soft/" target="_blank">미리보기</a>
+            </div>
+        </div>
+
+        <h3>템플릿 다운로드</h3>
+        <ol>
+            <li><a href="https://github.com/dongdong39/wedding_templates" target="_blank">https://github.com/dongdong39/wedding_templates</a> 에 접속합니다.</li>
+            <li>초록색 <strong>Code</strong> 버튼 클릭 → <strong>Download ZIP</strong>을 클릭합니다.</li>
+            <li>다운받은 ZIP 파일의 압축을 풀어줍니다.</li>
+            <li>마음에 드는 템플릿 폴더 하나를 선택합니다. (예: <code>classic-elegant</code>)</li>
+        </ol>
+
+        <div class="img-placeholder">캡처 이미지: GitHub에서 Download ZIP 하는 화면</div>
+    </section>
+
+    <!-- STEP 3: config.js 수정 -->
+    <section class="step" id="step3">
+        <div class="step-number">3</div>
+        <h2>내 정보로 수정하기 (config.js)</h2>
+        <p>선택한 템플릿 폴더 안에 <code>config.js</code> 파일이 있습니다. 이 파일 <strong>하나만</strong> 수정하면 됩니다.</p>
+        <p>메모장, 텍스트 편집기 등 아무 프로그램으로 열어서 수정할 수 있습니다.</p>
+
+        <div class="info-box">
+            <strong>핵심:</strong> <code>config.js</code>의 내용 순서는 실제 청첩장에서 보이는 순서와 동일합니다. 위에서 아래로 읽으면서 수정하시면 됩니다.
+        </div>
+
+        <h3>수정 항목 체크리스트</h3>
+        <ul class="checklist">
+            <li>초대장 열기 화면 사용 여부 (useCurtain)</li>
+            <li>신랑 이름 / 아버지 / 어머니</li>
+            <li>신부 이름 / 아버지 / 어머니</li>
+            <li>결혼 날짜, 시간</li>
+            <li>예식장 이름, 층/홀, 주소, 전화번호</li>
+            <li>카카오맵/네이버지도 링크</li>
+            <li>인사말 문구</li>
+            <li>우리의 이야기 문구</li>
+            <li>신랑측 계좌번호 (신랑, 아버지, 어머니)</li>
+            <li>신부측 계좌번호 (신부, 아버지, 어머니)</li>
+            <li>카카오톡 공유 제목/설명</li>
+        </ul>
+
+        <h3>수정 예시</h3>
+        <p>아래처럼 따옴표(<code>" "</code>) 안의 내용만 바꾸면 됩니다.</p>
+
+<pre><span class="comment">// 수정 전 (기본값)</span>
+<span class="key">groom</span>: {
+  <span class="key">name</span>: <span class="string">"신랑"</span>,
+  <span class="key">father</span>: <span class="string">"아버지"</span>,
+  <span class="key">mother</span>: <span class="string">"어머니"</span>,
+},
+
+<span class="comment">// 수정 후 (내 정보 입력)</span>
+<span class="key">groom</span>: {
+  <span class="key">name</span>: <span class="string">"홍길동"</span>,
+  <span class="key">father</span>: <span class="string">"홍판서"</span>,
+  <span class="key">mother</span>: <span class="string">"김미영"</span>,
+},</pre>
+
+<pre><span class="comment">// 결혼 날짜/시간 수정</span>
+<span class="key">wedding</span>: {
+  <span class="key">date</span>: <span class="string">"2026-05-09"</span>,      <span class="comment">// 날짜 (YYYY-MM-DD 형식)</span>
+  <span class="key">time</span>: <span class="string">"13:00"</span>,           <span class="comment">// 시간 (24시간 형식)</span>
+  <span class="key">venue</span>: <span class="string">"더채플앳청담"</span>,    <span class="comment">// 예식장 이름</span>
+  <span class="key">hall</span>: <span class="string">"그랜드홀 3층"</span>,     <span class="comment">// 홀 이름</span>
+  <span class="key">address</span>: <span class="string">"서울시 강남구 청담동 123"</span>,
+  <span class="key">tel</span>: <span class="string">"02-1234-5678"</span>,
+},</pre>
+
+        <div class="warn-box">
+            <strong>주의사항</strong><br>
+            - 따옴표(<code>" "</code>)를 지우면 안 됩니다<br>
+            - 쉼표(<code>,</code>)를 지우면 안 됩니다<br>
+            - 줄바꿈을 넣고 싶으면 <code>\n</code>을 사용하세요<br>
+            &nbsp;&nbsp;예: <code>"첫째 줄\n둘째 줄"</code><br>
+            - 빈 줄(한 줄 띄기)을 넣고 싶으면 <code>\n\n</code>을 사용하세요<br>
+            &nbsp;&nbsp;예: <code>"첫번째 문단\n\n두번째 문단"</code> → 문단 사이에 여백이 생깁니다
+        </div>
+
+        <h3>초대장 열기 화면 설정</h3>
+        <p>청첩장을 열었을 때 "초대장 열기" 버튼이 먼저 나오게 할지 설정합니다.</p>
+
+<pre><span class="key">useCurtain</span>: <span class="bool">true</span>,   <span class="comment">// 초대장 열기 화면 보여주기</span>
+<span class="key">useCurtain</span>: <span class="bool">false</span>,  <span class="comment">// 바로 본문 보여주기</span></pre>
+
+        <h3>고인 표시 (故)</h3>
+        <p>부모님이 돌아가신 경우 아래처럼 설정하면 자동으로 故 표시가 됩니다.</p>
+
+<pre><span class="key">groom</span>: {
+  <span class="key">name</span>: <span class="string">"홍길동"</span>,
+  <span class="key">father</span>: <span class="string">"홍판서"</span>,
+  <span class="key">mother</span>: <span class="string">"김미영"</span>,
+  <span class="key">fatherDeceased</span>: <span class="bool">true</span>,   <span class="comment">// 아버지 고인 여부</span>
+  <span class="key">motherDeceased</span>: <span class="bool">false</span>,  <span class="comment">// 어머니 고인 여부</span>
+},</pre>
+
+        <h3>지도 링크 설정하기</h3>
+        <ol>
+            <li><strong>카카오맵:</strong> <a href="https://map.kakao.com" target="_blank">map.kakao.com</a>에서 예식장 검색 → "공유" 클릭 → URL 복사</li>
+            <li><strong>네이버지도:</strong> <a href="https://map.naver.com" target="_blank">map.naver.com</a>에서 예식장 검색 → "공유" 클릭 → URL 복사</li>
+        </ol>
+
+<pre><span class="key">mapLinks</span>: {
+  <span class="key">kakao</span>: <span class="string">"https://map.kakao.com/link/map/더채플앳청담,37.123,127.456"</span>,
+  <span class="key">naver</span>: <span class="string">"https://naver.me/abc123"</span>
+}</pre>
+    </section>
+
+    <!-- STEP 4: 사진 준비 -->
+    <section class="step" id="step4">
+        <div class="step-number">4</div>
+        <h2>내 사진 준비하기</h2>
+        <p>사진은 아래 폴더에 <strong>번호 이름</strong>으로 넣으면 자동으로 인식됩니다.</p>
+
+        <div class="folder-tree">
+            <span class="folder">images/</span><br>
+            &nbsp;&nbsp;├── <span class="folder">hero/</span> <span class="comment">← 메인 사진 1장</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">1.jpg</span><br>
+            &nbsp;&nbsp;├── <span class="folder">story/</span> <span class="comment">← 스토리 사진들</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">1.jpg</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">2.jpg</span><br>
+            &nbsp;&nbsp;├── <span class="folder">gallery/</span> <span class="comment">← 갤러리 사진들 (원하는 만큼)</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">1.jpg</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">2.jpg</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">3.jpg</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">...</span><br>
+            &nbsp;&nbsp;├── <span class="folder">location/</span> <span class="comment">← 약도/지도 이미지 1장</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">1.jpg</span><br>
+            &nbsp;&nbsp;└── <span class="folder">og/</span> <span class="comment">← 카카오톡 공유 썸네일 1장</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">1.jpg</span>
+        </div>
+
+        <h3>사진 준비 규칙</h3>
+        <table>
+            <tr><th>폴더</th><th>용도</th><th>파일명</th><th>권장 비율</th></tr>
+            <tr><td><code>hero/</code></td><td>메인 대표 사진</td><td>1.jpg</td><td>3:4 세로</td></tr>
+            <tr><td><code>story/</code></td><td>우리 이야기 사진</td><td>1.jpg, 2.jpg ...</td><td>자유</td></tr>
+            <tr><td><code>gallery/</code></td><td>갤러리 사진들</td><td>1.jpg, 2.jpg ...</td><td>1:1 정사각형 권장</td></tr>
+            <tr><td><code>location/</code></td><td>약도/지도</td><td>1.jpg</td><td>자유</td></tr>
+            <tr><td><code>og/</code></td><td>카카오톡 공유 이미지</td><td>1.jpg</td><td>1200x630px 권장</td></tr>
+        </table>
+
+        <div class="warn-box">
+            <strong>파일명은 반드시 숫자.jpg로!</strong><br>
+            <code>1.jpg</code>, <code>2.jpg</code>, <code>3.jpg</code> ... 순서대로 넣어주세요.<br>
+            중간에 빈 번호가 있으면 거기서 멈춥니다. (예: 1.jpg, 3.jpg만 있으면 1번만 표시)
+        </div>
+
+        <div class="info-box">
+            <strong>사진 용량이 너무 클 때</strong><br>
+            사진이 크면 로딩이 느려집니다. <a href="https://www.iloveimg.com/ko/compress-image" target="_blank">iLoveIMG</a> 같은 무료 사이트에서 압축하면 좋습니다. 사진당 500KB~1MB 이하를 추천합니다.
+        </div>
+
+        <h3>기존 샘플 사진 교체하기</h3>
+        <p>템플릿에 미리 들어있는 샘플 사진을 내 사진으로 교체하면 됩니다.</p>
+        <ol>
+            <li>각 폴더의 기존 샘플 사진을 삭제합니다.</li>
+            <li>내 사진 파일명을 <code>1.jpg</code>, <code>2.jpg</code> ... 로 변경합니다.</li>
+            <li>해당 폴더에 넣습니다.</li>
+        </ol>
+    </section>
+
+    <!-- STEP 5: 레포 만들기 -->
+    <section class="step" id="step5">
+        <div class="step-number">5</div>
+        <h2>GitHub에 레포지토리 만들기</h2>
+        <p>레포지토리(repository)는 파일을 저장하는 공간입니다. 하나 만들어야 합니다.</p>
+
+        <ol>
+            <li>GitHub에 로그인한 상태에서 오른쪽 위 <strong>+</strong> 버튼 → <strong>New repository</strong> 클릭</li>
+            <li><strong>Repository name</strong>에 원하는 이름 입력 (예: <code>my-wedding</code>)</li>
+            <li><strong>Public</strong>을 선택합니다. (무료 Pages는 Public만 가능)</li>
+            <li><strong>Create repository</strong> 클릭!</li>
+        </ol>
+
+        <div class="img-placeholder">캡처 이미지: New Repository 생성 화면</div>
+
+        <div class="warn-box">
+            <strong>레포지토리 이름 = 청첩장 주소의 일부</strong><br>
+            이름이 <code>my-wedding</code>이면 주소는 <code>https://사용자이름.github.io/my-wedding/</code>이 됩니다.<br>
+            한글은 사용하지 마세요. 영문, 숫자, 하이픈(-)만 사용 가능합니다.
+        </div>
+    </section>
+
+    <!-- STEP 6: 파일 올리기 -->
+    <section class="step" id="step6">
+        <div class="step-number">6</div>
+        <h2>파일 올리기</h2>
+        <p>수정한 템플릿 파일들을 GitHub에 올립니다. Git 설치 없이 웹에서 바로 올릴 수 있습니다.</p>
+
+        <ol>
+            <li>방금 만든 레포지토리 페이지에서 <strong>uploading an existing file</strong> 링크를 클릭합니다.</li>
+            <li>수정한 템플릿 폴더 안의 <strong>모든 파일과 폴더</strong>를 선택해서 드래그 앤 드롭합니다.</li>
+            <li>올릴 파일 목록을 확인합니다.</li>
+            <li>하단의 <strong>Commit changes</strong> 버튼을 클릭합니다.</li>
+        </ol>
+
+        <div class="info-box">
+            <strong>폴더째로 드래그하면 폴더 구조가 유지됩니다!</strong><br>
+            <code>images</code> 폴더를 통째로 드래그하면 안의 하위 폴더(<code>hero/</code>, <code>gallery/</code> 등)도 함께 올라갑니다.
+        </div>
+
+        <h3>동영상으로 보기</h3>
+        <div class="video-container">
+            <video controls muted playsinline>
+                <source src="upload-to-github.mov" type="video/mp4">
+                브라우저가 동영상을 지원하지 않습니다.
+            </video>
+        </div>
+
+        <div class="warn-box">
+            <strong>한 번에 100개 파일까지만 업로드 가능합니다.</strong><br>
+            파일이 100개가 넘으면 나눠서 여러 번 올리세요. (코드 파일 먼저 → 이미지 폴더 나중에)
+        </div>
+    </section>
+
+    <!-- STEP 7: Pages 배포 -->
+    <section class="step" id="step7">
+        <div class="step-number">7</div>
+        <h2>웹페이지 배포하기 (GitHub Pages)</h2>
+        <p>올린 파일을 실제 웹사이트로 공개하는 설정입니다.</p>
+
+        <ol>
+            <li>레포지토리 페이지에서 <strong>Settings</strong> 탭 클릭</li>
+            <li>왼쪽 메뉴에서 <strong>Pages</strong> 클릭</li>
+            <li>Branch에서 <strong>None</strong>을 <strong>main</strong>으로 변경</li>
+            <li><strong>Save</strong> 클릭!</li>
+        </ol>
+
+        <div class="img-placeholder">캡처 이미지: Settings → Pages 설정 화면</div>
+
+        <div class="success-box">
+            <strong>약 1~2분 후에 배포가 완료됩니다!</strong><br>
+            주소: <code>https://사용자이름.github.io/레포이름/</code>
+        </div>
+    </section>
+
+    <!-- STEP 8: 확인 및 공유 -->
+    <section class="step" id="step8">
+        <div class="step-number">8</div>
+        <h2>완성! 확인하고 공유하기</h2>
+
+        <h3>확인하기</h3>
+        <ol>
+            <li>브라우저에서 <code>https://사용자이름.github.io/레포이름/</code>에 접속합니다.</li>
+            <li>모바일에서도 확인해보세요. (핸드폰 브라우저에서 주소 입력)</li>
+        </ol>
+
+        <h3>공유하기</h3>
+        <p>위 주소를 카카오톡, 문자 등으로 보내면 됩니다.</p>
+
+        <div class="info-box">
+            <strong>카카오톡 미리보기가 안 나올 때</strong><br>
+            카카오톡은 한번 공유한 URL의 미리보기를 캐시합니다. 수정 후 미리보기가 안 바뀌면:<br>
+            <a href="https://developers.kakao.com/tool/debugger/sharing" target="_blank">카카오 공유 디버거</a>에서 URL을 입력하고 <strong>캐시 초기화</strong>를 눌러주세요.
+        </div>
+
+        <h3>최종 체크리스트</h3>
+        <ul class="checklist">
+            <li>신랑/신부 이름이 맞는지</li>
+            <li>결혼 날짜와 시간이 맞는지</li>
+            <li>예식장 이름과 주소가 맞는지</li>
+            <li>카카오맵/네이버지도 링크가 잘 열리는지</li>
+            <li>계좌번호가 정확한지</li>
+            <li>사진이 모두 잘 보이는지</li>
+            <li>카카오톡으로 공유했을 때 미리보기가 잘 나오는지</li>
+        </ul>
+    </section>
+
+    <!-- STEP 9: 수정 -->
+    <section class="step" id="step9">
+        <div class="step-number">9</div>
+        <h2>수정이 필요할 때</h2>
+        <p>배포 후에도 언제든 수정할 수 있습니다. 전부 GitHub 웹에서 가능합니다.</p>
+
+        <h3>텍스트 수정 (이름, 날짜, 계좌번호 등)</h3>
+        <ol>
+            <li>GitHub 레포지토리에서 <code>config.js</code> 파일을 클릭합니다.</li>
+            <li>오른쪽 위 <strong>연필 아이콘</strong>(Edit)을 클릭합니다.</li>
+            <li>내용을 수정합니다.</li>
+            <li>하단의 <strong>Commit changes</strong>를 클릭합니다.</li>
+            <li>약 1~2분 후 반영됩니다.</li>
+        </ol>
+
+        <h3>사진 교체</h3>
+        <ol>
+            <li>교체할 사진의 파일명을 동일하게 맞춥니다. (예: <code>1.jpg</code>)</li>
+            <li>해당 폴더에 <strong>Add file → Upload files</strong>로 새 파일을 올립니다.</li>
+            <li>같은 이름이면 자동으로 덮어쓰기 됩니다.</li>
+        </ol>
+
+        <h3>사진 삭제</h3>
+        <ol>
+            <li>삭제할 파일을 클릭합니다.</li>
+            <li>오른쪽 위 <strong>휴지통 아이콘</strong>(또는 <code>...</code> → Delete)을 클릭합니다.</li>
+            <li><strong>Commit changes</strong>를 클릭합니다.</li>
+        </ol>
+
+        <h3>전면 수정 (디자인 변경)</h3>
+        <p>템플릿 자체를 바꾸고 싶다면, 가장 간단한 방법은:</p>
+        <ol>
+            <li>기존 레포지토리를 삭제합니다. (Settings → 맨 아래 Delete this repository)</li>
+            <li>새 레포지토리를 만들고 다른 템플릿을 올립니다.</li>
+        </ol>
+
+        <div class="info-box">
+            수정 후 바로 반영이 안 되면 브라우저에서 <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>)로 새로고침 해보세요. 브라우저 캐시 때문에 이전 버전이 보일 수 있습니다.
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="step" id="faq">
+        <div class="step-number">?</div>
+        <h2>자주 묻는 질문 (FAQ)</h2>
+
+        <div class="faq-item">
+            <button class="faq-question">배포했는데 페이지가 안 보여요</button>
+            <div class="faq-answer">
+                <p>GitHub Pages 배포는 1~2분 정도 걸립니다. 잠시 기다린 후 다시 접속해보세요. 그래도 안 되면 Settings → Pages에서 Branch가 <strong>main</strong>으로 설정되어 있는지 확인해주세요.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">이미지가 안 나와요</button>
+            <div class="faq-answer">
+                <p>파일명을 확인해주세요. 반드시 <code>1.jpg</code>, <code>2.jpg</code> 형태여야 합니다. 대소문자도 정확히 맞아야 합니다. (<code>1.JPG</code>와 <code>1.jpg</code>는 다릅니다!) PNG 파일이면 <code>.jpg</code>로 변환해주세요.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">수정했는데 반영이 안 돼요</button>
+            <div class="faq-answer">
+                <p>브라우저 캐시 때문입니다. <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>)로 강제 새로고침 해보세요. 그래도 안 되면 1~2분 더 기다려보세요.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">config.js 수정했더니 페이지가 하얗게 나와요</button>
+            <div class="faq-answer">
+                <p>문법 오류가 있을 가능성이 높습니다. 흔한 실수:<br>
+                - 따옴표(<code>" "</code>)가 빠진 경우<br>
+                - 쉼표(<code>,</code>)가 빠진 경우<br>
+                - 중괄호(<code>{ }</code>)가 빠진 경우<br><br>
+                수정 전 원본 config.js와 비교해서 확인해보세요.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">카카오톡 공유 시 미리보기가 안 바뀌어요</button>
+            <div class="faq-answer">
+                <p>카카오톡은 한번 읽어간 URL의 정보를 캐시합니다. <a href="https://developers.kakao.com/tool/debugger/sharing" target="_blank">카카오 공유 디버거</a>에서 URL을 입력하고 <strong>캐시 초기화</strong>를 누르면 새 정보로 갱신됩니다.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">갤러리 사진 순서를 바꾸고 싶어요</button>
+            <div class="faq-answer">
+                <p>사진은 파일명 번호 순서대로 표시됩니다. 순서를 바꾸고 싶으면 파일명 번호를 변경하면 됩니다. 예를 들어 3번째 사진을 1번으로 옮기고 싶다면, 파일명을 서로 바꿔주세요.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">완전 무료인가요? 나중에 비용이 발생하나요?</button>
+            <div class="faq-answer">
+                <p>네, 완전 무료입니다. GitHub Pages는 Public 레포지토리에 대해 무료로 웹 호스팅을 제공합니다. 도메인 비용도 없고, 트래픽 비용도 없습니다. 결혼식이 끝나면 레포지토리를 삭제하면 됩니다.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">결혼식 끝나면 어떻게 하나요?</button>
+            <div class="faq-answer">
+                <p>그냥 놔둬도 되고, 삭제하고 싶으면 레포지토리의 Settings → 맨 아래 <strong>Delete this repository</strong>를 클릭하면 됩니다.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer class="footer">
+    <p>Made with wedding templates by <a href="https://github.com/dongdong39/wedding_templates" target="_blank" style="color:#888;">dongdong39</a></p>
+</footer>
+
+<script>
+// FAQ 아코디언
+document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('active');
+    });
+});
+</script>
+
+</body>
+</html>
