@@ -727,14 +727,26 @@
 
         <ol>
             <li>방금 만든 레포지토리 페이지에서 <strong>uploading an existing file</strong> 링크를 클릭합니다.</li>
-            <li>수정한 템플릿 폴더 안의 <strong>모든 파일과 폴더</strong>를 선택해서 드래그 앤 드롭합니다.</li>
+            <li>선택한 템플릿 폴더를 열고, <strong>폴더 안의 파일들만</strong> 전체 선택해서 드래그 앤 드롭합니다.</li>
             <li>올릴 파일 목록을 확인합니다.</li>
             <li>하단의 <strong>Commit changes</strong> 버튼을 클릭합니다.</li>
         </ol>
 
+        <div class="warn-box">
+            <strong>템플릿 폴더 자체를 올리면 안 됩니다!</strong><br>
+            예를 들어 <code>classic-elegant</code> 폴더를 통째로 드래그하면 안 됩니다.<br>
+            <code>classic-elegant</code> 폴더를 <strong>열어서</strong> 안에 있는 아래 파일들만 올려주세요:<br><br>
+            &nbsp;&nbsp;- <code>config.js</code><br>
+            &nbsp;&nbsp;- <code>index.html</code><br>
+            &nbsp;&nbsp;- <code>script.js</code><br>
+            &nbsp;&nbsp;- <code>styles.css</code><br>
+            &nbsp;&nbsp;- <code>images</code> 폴더<br><br>
+            이 5개를 전체 선택(Ctrl+A / Cmd+A)해서 드래그하면 됩니다.
+        </div>
+
         <div class="info-box">
-            <strong>폴더째로 드래그하면 폴더 구조가 유지됩니다!</strong><br>
-            <code>images</code> 폴더를 통째로 드래그하면 안의 하위 폴더(<code>hero/</code>, <code>gallery/</code> 등)도 함께 올라갑니다.
+            <strong>images 폴더는 통째로 드래그해도 됩니다!</strong><br>
+            <code>images</code> 폴더를 드래그하면 안의 하위 폴더(<code>hero/</code>, <code>gallery/</code> 등)도 함께 올라갑니다.
         </div>
 
         <h3>동영상으로 보기</h3>
