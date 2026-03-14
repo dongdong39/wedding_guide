@@ -4,42 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>하망이의 무료 모바일 청첩장 만들기 가이드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-            background: #f5f5f5;
+            font-family: 'Noto Sans KR', -apple-system, 'Apple SD Gothic Neo', sans-serif;
+            background: #f0f2f5;
             color: #333;
             line-height: 1.8;
         }
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a2e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
             color: #fff;
             text-align: center;
-            padding: 60px 20px 50px;
+            padding: 80px 20px 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: floatingLight 6s ease-in-out infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes floatingLight {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
         }
         .header h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
         }
         .header p {
-            font-size: 15px;
-            color: #ccc;
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
             max-width: 500px;
             margin: 0 auto;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.5s;
         }
         .header .badge {
             display: inline-block;
-            margin-top: 16px;
-            padding: 6px 16px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 20px;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 24px;
             font-size: 13px;
-            color: #eee;
+            color: #fff;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating particles in header */
+        .header-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(100px) scale(0); }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-400px) scale(1); }
         }
 
         /* Container */
@@ -52,11 +113,12 @@
         /* Table of Contents */
         .toc {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 30px;
-            margin: -30px auto 30px;
+            margin: -40px auto 30px;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            z-index: 10;
         }
         .toc h2 {
             font-size: 18px;
@@ -89,29 +151,36 @@
             justify-content: center;
             width: 28px;
             height: 28px;
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
             border-radius: 50%;
             font-size: 13px;
             font-weight: 600;
-            color: #666;
+            color: #667eea;
             flex-shrink: 0;
         }
 
         /* Step Sections */
         .step {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 36px 30px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .step-number {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
-            background: #2c2c2c;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
             border-radius: 50%;
             font-size: 16px;
@@ -274,14 +343,14 @@
             display: inline-block;
             margin-top: 10px;
             padding: 6px 14px;
-            background: #2c2c2c;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
             text-decoration: none;
             border-radius: 6px;
             font-size: 12px;
-            transition: background 0.2s;
+            transition: opacity 0.2s;
         }
-        .template-card a:hover { background: #444; }
+        .template-card a:hover { opacity: 0.85; }
 
         /* Folder structure */
         .folder-tree {
@@ -414,6 +483,7 @@
 <body>
 
 <header class="header">
+    <div class="header-particles"></div>
     <h1>하망이의 무료 모바일 청첩장 만들기</h1>
     <p>GitHub Pages를 이용해서 무료로 나만의 모바일 청첩장을 만들어보세요. 개발 지식 없이도 할 수 있습니다.</p>
     <span class="badge">완전 무료 &middot; 코딩 필요 없음 &middot; 30분이면 완성</span>
@@ -435,6 +505,7 @@
             <li><a href="#step8">완성! 확인하고 공유하기</a></li>
             <li><a href="#step9">수정이 필요할 때</a></li>
             <li><a href="#faq">자주 묻는 질문 (FAQ)</a></li>
+            <li><a href="#step10">부록: 나만의 모바일 청첩장 만들기</a></li>
         </ol>
     </nav>
 
@@ -938,6 +1009,46 @@
         </div>
     </section>
 
+    <!-- STEP 10: 부록 -->
+    <section class="step" id="step10">
+        <div class="step-number" style="background: linear-gradient(135deg, #f093fb, #f5576c);">+</div>
+        <h2>부록: 나만의 모바일 청첩장 만들기</h2>
+
+        <h3>이 템플릿들은 어떻게 만들었나요?</h3>
+        <p><strong>AI로 만들었습니다.</strong></p>
+        <p>이 페이지에 있는 9개의 청첩장 템플릿은 모두 AI 코딩 도구를 사용해서 만들었습니다. 이 가이드 페이지 자체도 AI로 만들었습니다.</p>
+
+        <div class="divider"></div>
+
+        <h3>나만의 디자인을 원한다면?</h3>
+        <p>제공된 템플릿이 마음에 들지 않거나, 완전히 나만의 디자인을 원한다면 AI 코딩 도구를 사용해보세요.</p>
+
+        <table>
+            <tr><th>도구</th><th>설명</th></tr>
+            <tr>
+                <td><strong><a href="https://claude.com/claude-code" target="_blank" style="color:#667eea;">Claude Code</a></strong></td>
+                <td>Anthropic의 AI 코딩 에이전트. 터미널에서 자연어로 코드를 생성/수정할 수 있습니다.</td>
+            </tr>
+            <tr>
+                <td><strong><a href="https://chatgpt.com/codex" target="_blank" style="color:#667eea;">GPT Codex</a></strong></td>
+                <td>OpenAI의 AI 코딩 에이전트. GitHub 레포에 직접 연결해서 코드를 수정하고 PR까지 만들어줍니다.</td>
+            </tr>
+        </table>
+
+        <p>이런 도구들이 있다면, 여러분만의 웹페이지를 직접 만들 수 있습니다. 예를 들어:</p>
+        <ul>
+            <li>"핑크 톤의 모바일 청첩장을 만들어줘"</li>
+            <li>"갤러리에 슬라이드 기능을 추가해줘"</li>
+            <li>"배경에 벚꽃 효과를 넣어줘"</li>
+        </ul>
+        <p>이렇게 자연어로 요청하면 AI가 코드를 만들어줍니다.</p>
+
+        <div class="info-box">
+            <strong>개발자가 아니어도 괜찮습니다.</strong><br>
+            AI 코딩 도구는 "어떤 웹페이지를 만들어줘"라고 말하면 알아서 코드를 작성해줍니다. 코딩 지식이 없어도 나만의 웹페이지를 만들 수 있는 시대입니다.
+        </div>
+    </section>
+
 </div>
 
 <footer class="footer">
@@ -952,6 +1063,32 @@ document.querySelectorAll('.faq-question').forEach(btn => {
         item.classList.toggle('active');
     });
 });
+
+// Scroll animation for steps
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.step').forEach(el => observer.observe(el));
+
+// Header particles
+(function() {
+    const container = document.querySelector('.header-particles');
+    if (!container) return;
+    for (let i = 0; i < 15; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        p.style.width = p.style.height = (Math.random() * 4 + 3) + 'px';
+        container.appendChild(p);
+    }
+})();
 </script>
 
 </body>
